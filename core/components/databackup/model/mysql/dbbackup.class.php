@@ -132,7 +132,8 @@ Class DBBackup {
                 'database' => $modx->getOption('dbname'),
                 'create_database' => false,
                 'includeTables' => null,
-                'excludeTables' => null
+                'excludeTables' => null,
+                'versioned' => true
             );
             
 
@@ -327,7 +328,11 @@ Class DBBackup {
         }
 	    // create base folder - DB_backup_time()
 	    if ( $this->config['write_file'] || $this->config['write_table_files'] ) {
-	        $dir = $this->config['base_path'].''.$this->dbName.'_'.date('Y_m_d').'__'.time().'/';
+            if ($this->config['versioned']) {
+                $dir = $this->config['base_path'].''.$this->dbName.'_'.date('Y_m_d').'__'.time().'/';
+            } else {
+                $dir = $this->config['base_path'];
+            }
             $this->filePathData['folder'] = $dir;
     	    if( !is_dir($dir) ){
                 mkdir($dir);

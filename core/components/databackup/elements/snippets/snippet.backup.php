@@ -8,6 +8,8 @@ $output = '';
 // back up my modx database:
 $data_folder = $modx->getOption('databackup.folder', $scriptProperties, $path.'dumps/');
 $purge_time = $modx->getOption('databackup.pruge', $scriptProperties, 1814400);
+// if false, put files directly into $data_folder instead of a subfolders with date
+$versioned = $modx->getOption('versioned', $scriptProperties, true);
 // includeTables should be a comma separtaed list
 $includeTables = $modx->getOption('includeTables', $scriptProperties, NULL);
 // excludeTables should be a comma separtaed list
@@ -45,6 +47,7 @@ $db = new DBBackup($modx,
         'comment_suffix' => $comment_suffix,
         'new_line' => $new_line,
         'base_path' => $data_folder,
+        'versioned' => $versioned,
         'write_file' => $write_file,
         'write_table_files' => $write_table_files,
         'use_drop' => $use_drop,
@@ -52,7 +55,7 @@ $db = new DBBackup($modx,
         'create_database' => $create_database,
         'includeTables' => $includeTables,
         'excludeTables' => $excludeTables,
-         
+        
     ));
 
 $backup = $db->backup();
@@ -61,7 +64,9 @@ if($backup){
 } else {
     $output .= 'An error has ocurred and MODX did not get backed up correctly: '.$db->getErrors();
 }
-$db->purge($purge_time);
+if ($versioned) {
+    $db->purge($purge_time);
+}
 
 return $output;
 
