@@ -18,6 +18,14 @@ $properties = array(
           'lexicon' => 'databackup:properties'
           ),
     array(
+          'name' => 'versioned',
+          'desc' => 'prop_databackup.versioned_desc',
+          'type' => 'combo-boolean',
+          'options' => '',
+          'value' => 1,
+          'lexicon' => 'databackup:properties'
+          ),
+    array(
           'name' => 'includeTables',
           'desc' => 'prop_databackup.includeTables_desc',
           'type' => 'textfield',
