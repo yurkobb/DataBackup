@@ -6,8 +6,8 @@ require_once $path.'model/mysql/dbbackup.class.php';
 
 $output = '';
 // back up my modx database:
-$data_folder = $modx->getOption('databackup.folder', $scriptProperties, $path.'dumps/');
-$purge_time = $modx->getOption('databackup.pruge', $scriptProperties, 1814400);
+$data_folder = $modx->getOption('dataFolder', $scriptProperties, $modx->getOption('databackup.folder', null, $path.'dumps/'));
+$purge_time = $modx->getOption('purge', $scriptProperties, $modx->getOption('databackup.purge', null, 1814400));
 // if false, put files directly into $data_folder instead of a subfolders with date
 $versioned = $modx->getOption('versioned', $scriptProperties, true);
 // includeTables should be a comma separtaed list
@@ -26,7 +26,7 @@ if ( $write_table_files === 'false' ) {
     $output .= ' <br>Do not write table files<br>';
 }
 // these are to change how the data file is written
-$comment_prefix = $modx->getOption('commentPrfeix', $scriptProperties, '--');
+$comment_prefix = $modx->getOption('commentPrefix', $scriptProperties, '-- ');
 $comment_suffix = $modx->getOption('commentSuffix', $scriptProperties, '');
 $new_line = $modx->getOption('newLine', $scriptProperties, "\n");
 // use the sql drop command
@@ -60,7 +60,7 @@ $db = new DBBackup($modx,
 
 $backup = $db->backup();
 if($backup){
-    $output .= 'The MODX data has been back up';
+    $output .= 'The MODX data has been backed up';
 } else {
     $output .= 'An error has ocurred and MODX did not get backed up correctly: '.$db->getErrors();
 }
